@@ -13,32 +13,33 @@ const studentList = [
 export default class ChallengeTwo extends Component {
   //declare the states
   state = {
-    arr: studentList,
-    index:0
+    arr: []
   }
 
   //componentDidMount will execute when the page has loaded (this will only run once)
-  componentDidMount() { 
-    //display the student list after 3 seconds
-      
-    this.setState({
-      listText: this.state.arr[this.state.index]
-    })
-
-    const makeArr= this.state.arr.map((text,index)=>{
-      return (
-        <li key={index}>
-          {this.state.text}
-        </li>
-      )
-    })
-        
-      }
+  componentDidMount() {
     
+    //display the student list after 3 seconds
+    setTimeout(()=> {
+      this.setState({
+      arr: studentList
+    })}, 3000)
+  }
 
   //random button handler
   randomize = () => {
+    // let newArr =[];
     //shuffle the array and set the state
+    for(let i=0;i<this.state.arr.length; i++) {
+      // newArr.push(this.state.arr[Math.floor(Math.random() * this.state.arr.length)])
+      let j = Math.floor(Math.random() * i+1);
+      let tmp = this.state.arr[i];
+      this.state.arr[i] = this.state.arr[j]
+      this.state.arr[j] = tmp
+    }
+    this.setState({
+      arr: this.state.arr
+    })
   }
 
   render() {
@@ -48,11 +49,16 @@ export default class ChallengeTwo extends Component {
         <div className='msg'>
           <ul>
             {/* display the list of students by iterating through the array */
-              this.makeArr
+            this.state.arr.map((student,index)=>(
+              <li key={this.state.index}>
+                {student}
+              </li>
+            ))
             }
+            
           </ul>
         </div>
-        <button className='btn large'>Randomize</button>
+        <button className='btn large' onClick={this.randomize}>Randomize</button>
       </>
     )
   }
